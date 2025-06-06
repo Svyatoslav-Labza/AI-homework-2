@@ -1,0 +1,489 @@
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  background-color: #fff;
+  border-radius: 8px;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  min-width: 750px; /* Prevent table from becoming too narrow */
+}
+
+.table th {
+  padding: 16px;
+  text-align: left;
+  color: #6B7280;
+  font-weight: 500;
+  font-size: 14px;
+  border-bottom: 1px solid #E5E7EB;
+  background-color: #F9FAFB;
+}
+
+.table td {
+  padding: 16px;
+  border-bottom: 1px solid #E5E7EB;
+  color: #374151;
+  font-size: 14px;
+}
+
+.tableRow {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+.tableRow:hover {
+  background-color: #F9FAFB;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.tableRow:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.nameCell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.name {
+  font-weight: 500;
+  color: #111827;
+}
+
+.email {
+  color: #6B7280;
+  word-break: break-word;
+}
+
+.website {
+  color: #3B82F6;
+  text-decoration: none;
+  word-break: break-word;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.website:hover {
+  text-decoration: none;
+  color: #2563EB;
+}
+
+.website::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: #2563EB;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.website:hover::after {
+  transform: scaleX(1);
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  color: #EF4444;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: all 0.2s ease;
+  transform-origin: center;
+}
+
+.deleteButton:hover {
+  background-color: #FEE2E2;
+  transform: scale(1.1);
+}
+
+.deleteButton:active {
+  transform: scale(0.95);
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 16px;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+.modalOverlay.closing {
+  animation: fadeOut 0.2s ease forwards;
+}
+
+.modal {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  width: 90%;
+  max-width: 480px;
+  position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  animation: modalEnter 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+  transform: scale(0.95) translateY(10px);
+}
+
+.modal.closing {
+  animation: modalExit 0.3s cubic-bezier(0.34, 0.64, 0.64, 1) forwards;
+}
+
+.modalContent {
+  width: 100%;
+  position: relative;
+}
+
+.modalClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #6B7280;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  line-height: 1;
+  z-index: 1;
+  transition: all 0.2s ease;
+}
+
+.modalName {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 4px 0;
+  padding-right: 32px;
+  word-break: break-word;
+  animation: fadeSlideUp 0.3s ease forwards;
+  opacity: 0;
+}
+
+.modalEmail {
+  color: #3B82F6;
+  text-decoration: none;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 24px;
+  word-break: break-word;
+  transition: all 0.2s ease;
+  animation: fadeSlideUp 0.3s ease 0.1s forwards;
+  opacity: 0;
+}
+
+.modalSection {
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeSlideUp 0.3s ease forwards;
+}
+
+.modalSection:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.modalSection:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.modalSection:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+.modalSection:last-child {
+  margin-bottom: 0;
+}
+
+.modalSection h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 12px 0;
+  text-transform: none;
+}
+
+.modalSection p {
+  margin: 4px 0;
+  color: #4B5563;
+  font-size: 14px;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.modalSection strong {
+  color: #374151;
+  font-weight: 500;
+  margin-right: 4px;
+}
+
+.mapLink {
+  display: inline-flex;
+  align-items: center;
+  color: #3B82F6;
+  text-decoration: none;
+  font-size: 14px;
+  margin-top: 8px;
+  transition: all 0.2s ease;
+  gap: 4px;
+}
+
+.mapLink span {
+  font-size: 16px;
+}
+
+.website {
+  color: #3B82F6;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.website:hover,
+.modalEmail:hover,
+.mapLink:hover {
+  color: #2563EB;
+  text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0);
+  }
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes modalExit {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading Animation */
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #6B7280;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #EF4444;
+  animation: shakeError 0.5s ease;
+}
+
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Responsive Breakpoints */
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
+  .table th,
+  .table td {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .modal {
+    width: 95%;
+    min-width: 0; /* Remove min-width constraint on smaller screens */
+    max-width: 500px;
+  }
+
+  .modalName {
+    font-size: 20px;
+  }
+
+  .modalEmail {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .modalSection h3 {
+    font-size: 15px;
+  }
+
+  .modalSection p {
+    font-size: 13px;
+  }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+  .table th,
+  .table td {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .modal {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .modalClose {
+    top: 12px;
+    right: 12px;
+    font-size: 20px;
+  }
+
+  .modalName {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+
+  .modalEmail {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .modalSection {
+    margin-bottom: 20px;
+  }
+
+  .modalSection h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .modalSection p {
+    font-size: 12px;
+    margin: 6px 0;
+  }
+
+  .mapLink {
+    font-size: 12px;
+  }
+
+  .deleteButton {
+    font-size: 18px;
+    padding: 3px 6px;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) {
+  .tableRow:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .tableRow:active {
+    background-color: #F9FAFB;
+  }
+
+  .website:hover::after {
+    transform: scaleX(0);
+  }
+
+  .website:active::after {
+    transform: scaleX(1);
+  }
+
+  .deleteButton:hover {
+    transform: none;
+    background-color: transparent;
+  }
+
+  .deleteButton:active {
+    transform: scale(0.95);
+    background-color: #FEE2E2;
+  }
+
+  .modalClose:hover {
+    transform: none;
+  }
+
+  .modalClose:active {
+    transform: scale(0.95);
+    background-color: #F3F4F6;
+  }
+
+  .mapLink:hover {
+    transform: none;
+  }
+
+  .mapLink:active {
+    transform: translateY(1px);
+  }
+} 
