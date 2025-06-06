@@ -1,5 +1,6 @@
 package com.example.app.service.impl;
 
+import com.example.app.exception.UserNotFoundException;
 import com.example.app.model.User;
 import com.example.app.repository.UserRepository;
 import com.example.app.service.UserService;
@@ -47,15 +48,15 @@ public class UserServiceImpl implements UserService {
                 user.setId(id);
                 return userRepository.save(user);
             })
-            .orElseGet(() -> {
-                user.setId(id);
-                return userRepository.save(user);
-            });
+            .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     // Delete
     @Override
     public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new UserNotFoundException(id);
+        }
         userRepository.deleteById(id);
     }
 } 
